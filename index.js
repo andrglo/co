@@ -1,4 +1,3 @@
-
 /**
  * slice() reference.
  */
@@ -23,7 +22,7 @@ module.exports = co['default'] = co.co = co;
  * @api public
  */
 
-co.wrap = function (fn) {
+co.wrap = function(fn) {
   createPromise.__generatorFunction__ = fn;
   return createPromise;
   function createPromise() {
@@ -39,6 +38,17 @@ co.wrap = function (fn) {
  * @return {Promise}
  * @api public
  */
+
+// Effects
+const effectKey = '~~effect~~';
+const isEffect = obj => !!obj[effectKey];
+const execEffect = (effect) => effect[effectKey].fn(...(effect[effectKey].args));
+co.effect = (fn, ...args) => ({
+  [effectKey]: {
+    fn,
+    args: [...args]
+  }
+});
 
 function co(gen) {
   var ctx = this;
@@ -100,7 +110,7 @@ function co(gen) {
       var value = toPromise.call(ctx, ret.value);
       if (value && isPromise(value)) return value.then(onFulfilled, onRejected);
       return onRejected(new TypeError('You may only yield a function, promise, generator, array, or object, '
-        + 'but the following object was passed: "' + String(ret.value) + '"'));
+                                      + 'but the following object was passed: "' + String(ret.value) + '"'));
     }
   });
 }
@@ -115,6 +125,9 @@ function co(gen) {
 
 function toPromise(obj) {
   if (!obj) return obj;
+  if (isEffect(obj)) {
+    obj = execEffect(obj);
+  }
   if (isPromise(obj)) return obj;
   if (isGeneratorFunction(obj) || isGenerator(obj)) return co.call(this, obj);
   if ('function' == typeof obj) return thunkToPromise.call(this, obj);
@@ -133,8 +146,8 @@ function toPromise(obj) {
 
 function thunkToPromise(fn) {
   var ctx = this;
-  return new Promise(function (resolve, reject) {
-    fn.call(ctx, function (err, res) {
+  return new Promise(function(resolve, reject) {
+    fn.call(ctx, function(err, res) {
       if (err) return reject(err);
       if (arguments.length > 2) res = slice.call(arguments, 1);
       resolve(res);
@@ -164,7 +177,7 @@ function arrayToPromise(obj) {
  * @api private
  */
 
-function objectToPromise(obj){
+function objectToPromise(obj) {
   var results = new obj.constructor();
   var keys = Object.keys(obj);
   var promises = [];
@@ -174,14 +187,14 @@ function objectToPromise(obj){
     if (promise && isPromise(promise)) defer(promise, key);
     else results[key] = obj[key];
   }
-  return Promise.all(promises).then(function () {
+  return Promise.all(promises).then(function() {
     return results;
   });
 
   function defer(promise, key) {
     // predefine the key in the result
     results[key] = undefined;
-    promises.push(promise.then(function (res) {
+    promises.push(promise.then(function(res) {
       results[key] = res;
     }));
   }
@@ -218,7 +231,7 @@ function isGenerator(obj) {
  * @return {Boolean}
  * @api private
  */
- 
+
 function isGeneratorFunction(obj) {
   var constructor = obj.constructor;
   if (!constructor) return false;

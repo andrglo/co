@@ -1,5 +1,5 @@
 {
-  "name": "co",
+  "name": "@ayk/co",
   "version": "4.6.0",
   "description": "generator async control flow goodness",
   "keywords": [
@@ -16,7 +16,7 @@
     "mz": "^1.0.2"
   },
   "scripts": {
-    "test": "mocha --harmony",
+    "test": "mocha --harmony --bail",
     "test-cov": "node --harmony node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- --reporter dot",
     "test-travis": "node --harmony node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha --report lcovonly -- --reporter dot",
     "prepublish": "npm run browserify",
@@ -27,9 +27,8 @@
     "index.js"
   ],
   "license": "MIT",
-  "repository": "tj/co",
+  "repository": "andrglo/co",
   "engines": {
-    "iojs": ">= 1.0.0",
-    "node": ">= 0.12.0"
+    "node": ">= 6.3.0"
   }
 }
