@@ -1,6 +1,6 @@
 {
   "name": "@ayk/co",
-  "version": "4.6.0",
+  "version": "4.6.1",
   "description": "generator async control flow goodness",
   "keywords": [
     "async",
