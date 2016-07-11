@@ -16,9 +16,13 @@ function sleep(ms) {
   }
 }
 
-function *work() {
+function *innerWork() {
   yield sleep(50);
   return 'yay';
+}
+
+function *work() {
+  return yield innerWork();
 }
 
 describe('co(* -> yield <effect -> Promise>', function(){
