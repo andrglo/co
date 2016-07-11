@@ -1,13 +1,11 @@
-# co
+# @ayk/co
 
-[![Gitter][gitter-image]][gitter-url]
-[![NPM version][npm-image]][npm-url]
-[![Build status][travis-image]][travis-url]
-[![Test coverage][coveralls-image]][coveralls-url]
-[![Downloads][downloads-image]][downloads-url]
 
   Generator based control flow goodness for nodejs and the browser,
   using promises, letting you write non-blocking code in a nice-ish way.
+
+> This is a fork of [tj/co](https://github.com/tj/co.git) where I intent to use _effects_
+or _lazy execution_ to allow testability. __Inspired by [redux-saga](https://github.com/yelouafi/redux-saga.git)__.
 
 ## Co v4
 
@@ -200,13 +198,3 @@ fn(true).then(function (val) {
 
   MIT
 
-[npm-image]: https://img.shields.io/npm/v/co.svg?style=flat-square
-[npm-url]: https://npmjs.org/package/co
-[travis-image]: https://img.shields.io/travis/tj/co.svg?style=flat-square
-[travis-url]: https://travis-ci.org/tj/co
-[coveralls-image]: https://img.shields.io/coveralls/tj/co.svg?style=flat-square
-[coveralls-url]: https://coveralls.io/r/tj/co
-[downloads-image]: http://img.shields.io/npm/dm/co.svg?style=flat-square
-[downloads-url]: https://npmjs.org/package/co
-[gitter-image]: https://badges.gitter.im/Join%20Chat.svg
-[gitter-url]: https://gitter.im/tj/co?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
