@@ -200,7 +200,7 @@ describe('co(* -> yield fn(done))', function () {
         }
 
         assert.equal(2, errors.length);
-        var msg = 'yield a function, promise, generator, array, or object';
+        var msg = 'yield a function, promise, generator, effect, array, or object';
         assert(~errors[0].indexOf(msg));
         assert(~errors[1].indexOf(msg));
       });

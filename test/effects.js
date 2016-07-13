@@ -106,3 +106,38 @@ describe('co(* -> yield <effect -> generator>', function(){
   })
 })
 
+// Using context
+
+var machine = {
+  test: 'hi',
+  show: function(n) {
+    return Promise.resolve(this.test + ' ' + n);
+  }
+};
+
+describe('co(* -> yield <effect -> Promise> - Using context', function(){
+  describe('with one effect yield', function(){
+    it('should work', function(){
+      return co(function *(){
+        var a = yield co.effect([machine, 'show'], 1);
+        assert.equal('hi 1', a);
+        a = yield co.effect([machine, machine.show], 1);
+        assert.equal('hi 1', a);
+      });
+    })
+  })
+
+  describe('with several effects yields', function(){
+    it('should work', function(){
+      return co(function *(){
+        var a = yield co.effect([machine, 'show'], 1);
+        var b = yield co.effect([machine, machine.show], 2);
+        var c = yield co.effect([machine, 'show'], 3);
+
+        assert.deepEqual(['hi 1', 'hi 2', 'hi 3'], [a, b, c]);
+      });
+    })
+  })
+
+})
+

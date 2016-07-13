@@ -116,7 +116,7 @@ function co(gen) {
       if (ret.done) return resolve(ret.value);
       var value = toPromise.call(ctx, ret.value);
       if (value && isPromise(value)) return value.then(onFulfilled, onRejected);
-      return onRejected(new TypeError('You may only yield a function, promise, generator, array, or object, '
+      return onRejected(new TypeError('You may only yield a function, promise, generator, effect, array, or object, '
         + 'but the following object was passed: "' + String(ret.value) + '"'));
     }
   });
@@ -134,7 +134,13 @@ function toPromise(obj) {
   if (!obj) return obj;
   if (isEffect(obj)) {
     var effect = obj[effectKey];
-    obj = effect.fn.apply(null, effect.args);
+    var fn = effect.fn;
+    var context = null;
+    if (Array.isArray(fn)) {
+      context = fn[0];
+      fn = typeof fn[1] === 'string' ? context[fn[1]] : fn[1];
+    }
+    obj = fn.apply(context, effect.args);
   }
   if (isPromise(obj)) return obj;
   if (isGeneratorFunction(obj) || isGenerator(obj)) return co.call(this, obj);
