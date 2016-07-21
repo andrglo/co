@@ -103,6 +103,12 @@ describe('co(* -> yield <effect -> generator>', function(){
         assert(err.message == 'boom');
       });
     })
+
+    it('should handle special effects', function(){
+      return co(function *(){
+        yield co.delay();
+      });
+    })
   })
 })
 

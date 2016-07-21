@@ -29,6 +29,15 @@ co.effect = function (fn) {
 };
 
 /**
+ * Expose `delay`.
+ */
+co.delay = function (ms) {
+  return co.effect(() => new Promise(function(resolve) {
+    setTimeout(resolve, ms || 0)
+  }));
+};
+
+/**
  * Wrap the given generator `fn` into a
  * function that returns a promise.
  * This is a separate function so that
